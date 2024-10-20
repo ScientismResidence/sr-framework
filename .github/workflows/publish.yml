@@ -17,15 +17,15 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Restore Dependencies
-        run: dotnet restore
+        run: dotnet restore src/Infrastructure/Infrastructure.csproj
 
       - name: Build Project
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build src/Infrastructure/Infrastructure.csproj --configuration Release --no-restore
 
       - name: Pack Project
-        run: dotnet pack --configuration Release --no-build
+        run: dotnet pack src/Infrastructure/Infrastructure.csproj --configuration Release --no-build
 
       - name: Push to NuGet
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: dotnet nuget push Infrastructure/bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
+        run: dotnet nuget push src/Infrastructure/bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
