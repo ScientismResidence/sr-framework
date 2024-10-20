@@ -1,0 +1,1 @@
+This is the set of classes used across my projects to simplify boiler-plating, configuration and services design.

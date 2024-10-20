@@ -3,7 +3,16 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
+        <PackageId>sr-framework</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Dmitrii Urusov</Authors>
+        <RepositoryUrl>https://github.com/ScientismResidence/sr-framework</RepositoryUrl>
+        <PackageReadmeFile>..\README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="..\"/>
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Autofac" Version="8.0.0" />
