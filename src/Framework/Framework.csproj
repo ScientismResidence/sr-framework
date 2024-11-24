@@ -4,8 +4,16 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
-        <IsPackable>false</IsPackable>
+        <PackageId>sr-framework</PackageId>
+        <Version>1.0.3</Version>
+        <Authors>Dmitrii Urusov</Authors>
+        <RepositoryUrl>https://github.com/ScientismResidence/sr-framework</RepositoryUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\README.md" Pack="true" PackagePath="README.md"/>
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />

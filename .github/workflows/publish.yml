@@ -17,6 +17,20 @@ jobs:
         with:
           dotnet-version: '8.x'
 
+      - name: Restore Dependencies for Framework
+        run: dotnet restore src/Framework/Framework.csproj
+
+      - name: Build Framework Project
+        run: dotnet build src/Framework/Framework.csproj --configuration Release --no-restore
+
+      - name: Pack Framework Project
+        run: dotnet pack src/Framework/Framework.csproj --configuration Release --no-build
+
+      - name: Push to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push src/Framework/bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
+      
       - name: Restore Dependencies
         run: dotnet restore src/Infrastructure/Infrastructure.csproj
 

@@ -3,8 +3,8 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <PackageId>sr-framework</PackageId>
-        <Version>1.0.2</Version>
+        <PackageId>sr-infrastructure</PackageId>
+        <Version>1.0.3</Version>
         <Authors>Dmitrii Urusov</Authors>
         <RepositoryUrl>https://github.com/ScientismResidence/sr-framework</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Framework\Framework.csproj" Pack="true"/>
+      <ProjectReference Include="..\Framework\Framework.csproj"/>
     </ItemGroup>
 
 </Project>
