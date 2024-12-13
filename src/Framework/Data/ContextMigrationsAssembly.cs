@@ -20,12 +20,12 @@ public class ContextMigrationsAssembly : MigrationsAssembly
         IDiagnosticsLogger<DbLoggerCategory.Migrations> logger)
         : base(currentContext, options, idGenerator, logger)
     {
-        var dbContext = currentContext.Context as ApplicationDbContext;
+        var dbContext = currentContext.Context as IApplicationDbContext;
 
         if (dbContext is null)
         {
             throw new FlowException(
-                $"{nameof(ContextMigrationsAssembly)} must use the {nameof(ApplicationDbContext)}");
+                $"{nameof(ContextMigrationsAssembly)} must implement the {nameof(IApplicationDbContext)}");
         }
         
         _context = dbContext.Context;

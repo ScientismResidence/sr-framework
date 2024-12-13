@@ -3,16 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Framework.Data;
 
-public class ApplicationDbContext : DbContext
+public interface IApplicationDbContext
 {
-    public ApplicationDbContext(DbContextOptions options, IContext context)
-        : base(options)
-    {
-        Context = context;
-    }
-    
-    public IContext Context { get; }
-    
+    IContext Context { get; }
+}
+
+public class ApplicationDbContext(DbContextOptions options, IContext context)
+    : DbContext(options), IApplicationDbContext
+{
+    public IContext Context { get; } = context;
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.ReplaceService<IMigrationsAssembly, ContextMigrationsAssembly>();
