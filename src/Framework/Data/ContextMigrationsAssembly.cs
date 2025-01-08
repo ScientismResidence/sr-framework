@@ -11,7 +11,7 @@ namespace Framework.Data;
 #pragma warning disable EF1001
 public class ContextMigrationsAssembly : MigrationsAssembly
 {
-    private readonly IContext _context;
+    private readonly IServiceProvider _provider;
     
     public ContextMigrationsAssembly(
         ICurrentDbContext currentContext, 
@@ -28,17 +28,17 @@ public class ContextMigrationsAssembly : MigrationsAssembly
                 $"{nameof(ContextMigrationsAssembly)} must implement the {nameof(IApplicationDbContext)}");
         }
         
-        _context = dbContext.Context;
+        _provider = dbContext.Provider;
     }
     
     public override Migration CreateMigration(TypeInfo migrationClass, string activeProvider)
     {
         var dependableMigration = migrationClass
-            .GetConstructor(new[] { typeof(IContext) }) != null;
+            .GetConstructor([typeof(IServiceProvider)]) != null;
 
         if (dependableMigration)
         {
-            var instance = (Migration)Activator.CreateInstance(migrationClass.AsType(), _context);
+            var instance = (Migration)Activator.CreateInstance(migrationClass.AsType(), _provider);
 
             if (instance is null)
             {

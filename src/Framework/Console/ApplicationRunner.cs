@@ -1,31 +1,23 @@
 ﻿using Framework.Console.Exception;
 using Framework.Logger;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Framework.Console;
 
-public class ApplicationRunner
+public class ApplicationRunner(IServiceProvider provider, CommandStore store)
 {
-    private readonly CommandStore _store;
-    private readonly IContext _context;
-    private readonly ILogger _logger;
-    
-    public ApplicationRunner(IContext context, CommandStore store)
-    {
-        _context = context;
-        _store = store;
-        _logger = context.Get<ILogger>();
-    }
-    
+    private readonly ILogger _logger = provider.GetService<ILogger>();
+
     public async Task ExecuteAsync(string command)
     {
         _logger.Log($"Executing command: [{command}]...");
-        CommandDefinition definition = _store.GetDefinition(command);
+        CommandDefinition definition = store.GetDefinition(command);
         
         if (definition is null)
         {
             _logger.Log("Unknown command.", LogLevel.Error);
             _logger.Log("List of commands (help):");
-            _logger.Log(_store.GetHelp().ToString());
+            _logger.Log(store.GetHelp().ToString());
             _logger.Log("-----------------");
         }
         else
@@ -60,8 +52,12 @@ public class ApplicationRunner
     {
         try
         {
+            using IServiceScope scope = provider.CreateScope();
+            
             Type handlerType = typeof(ICommandHandler<>).MakeGenericType(definition.CommandType);
-            dynamic handler = _context.Get(handlerType);
+            dynamic handler = scope.ServiceProvider.GetService(handlerType)
+                ?? throw new ApplicationException("Can't resolve handler type.");
+            
             object commandResult = definition.CreateCommand();
 
             await handler.HandleAsync((dynamic)commandResult);

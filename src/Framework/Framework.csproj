@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <PackageId>sr-framework</PackageId>
-        <Version>1.0.4</Version>
+        <Version>1.1</Version>
         <Authors>Dmitrii Urusov</Authors>
         <RepositoryUrl>https://github.com/ScientismResidence/sr-framework</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>

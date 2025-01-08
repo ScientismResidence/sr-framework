@@ -5,13 +5,13 @@ namespace Framework.Data;
 
 public interface IApplicationDbContext
 {
-    IContext Context { get; }
+    IServiceProvider Provider { get; }
 }
 
-public class ApplicationDbContext(DbContextOptions options, IContext context)
+public class ApplicationDbContext(DbContextOptions options, IServiceProvider provider)
     : DbContext(options), IApplicationDbContext
 {
-    public IContext Context { get; } = context;
+    public IServiceProvider Provider { get; } = provider;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

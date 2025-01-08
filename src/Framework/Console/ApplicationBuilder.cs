@@ -3,9 +3,9 @@
 public class ApplicationBuilder
 {
     private readonly CommandStore _store = new();
-    private IContext _provider;
+    private IServiceProvider _provider;
     
-    public ApplicationBuilder UseProvider(IContext provider)
+    public ApplicationBuilder UseProvider(IServiceProvider provider)
     {
         _provider = provider;
 
