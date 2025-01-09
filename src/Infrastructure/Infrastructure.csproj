@@ -9,6 +9,7 @@
         <Authors>Dmitrii Urusov</Authors>
         <RepositoryUrl>https://github.com/ScientismResidence/sr-framework</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
