@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure;
 
-public class SerilogLogger(Serilog.ILogger logger) : Framework.Logger.ILogger
+public class SerilogLogger(Serilog.ILogger logger) : Framework.Logger.IRootLogger
 {
     public void Log(string message)
     {

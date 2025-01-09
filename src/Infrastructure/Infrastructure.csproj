@@ -5,7 +5,7 @@
         <OutputType>Library</OutputType>
         <ImplicitUsings>enable</ImplicitUsings>
         <PackageId>sr-infrastructure</PackageId>
-        <Version>1.1.1</Version>
+        <Version>1.1.2</Version>
         <Authors>Dmitrii Urusov</Authors>
         <RepositoryUrl>https://github.com/ScientismResidence/sr-framework</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
