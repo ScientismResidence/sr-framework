@@ -1,10 +1,8 @@
 using FluentValidation;
 using FluentValidation.Results;
-using Framework;
 using Framework.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Filters;
 

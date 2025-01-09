@@ -1,5 +1,4 @@
 using Mapster;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Core;
 
@@ -16,7 +15,7 @@ public static class InfrastructureServiceCollectionExtensions
         string fileTemplate = $"logs/{name}-.log";
         
         services
-            .AddScoped<ILogger, Logger>(_ =>
+            .AddScoped<Serilog.ILogger, Logger>(_ =>
                 new LoggerConfiguration()
                     .WriteTo.Console(outputTemplate: messageTemplate)
                     .WriteTo.Async(a => 

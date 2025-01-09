@@ -1,58 +1,48 @@
-﻿using Framework;
-using Framework.Logger;
+﻿namespace Infrastructure;
 
-namespace Infrastructure;
-
-public class SerilogLogger : ILogger
+public class SerilogLogger(Serilog.ILogger logger) : Framework.Logger.ILogger
 {
-    private readonly Serilog.ILogger _logger;
-    
-    public SerilogLogger(Serilog.ILogger logger)
-    {
-        this._logger = logger;
-    }
-    
     public void Log(string message)
     {
-        this.log(message, null, LogLevel.Information);
+        log(message, null, Framework.Logger.LogLevel.Information);
     }
 
     public void Log(string message, Exception exception)
     {
-        this.log(message, exception, LogLevel.Error);
+        log(message, exception, Framework.Logger.LogLevel.Error);
     }
 
-    public void Log(string message, LogLevel level)
+    public void Log(string message, Framework.Logger.LogLevel level)
     {
-        this.log(message, null, level);
+        log(message, null, level);
     }
     
-    public void Log(string message, Exception exception, LogLevel level, params string[] tags)
+    public void Log(string message, Exception exception, Framework.Logger.LogLevel level, params string[] tags)
     {
-        this.log(message, exception, level, tags);
+        log(message, exception, level, tags);
     }
 
-    private void log(string message, Exception exception, LogLevel level, params string[] tags)
+    private void log(string message, Exception exception, Framework.Logger.LogLevel level, params string[] tags)
     {
         string messageTemplate = tags.Length > 0 ? "{Message} Tags:{@Tags}" : "{Message}";
         
         // By level log into the proper channel
         switch (level)
         {
-            case LogLevel.Information:
-                _logger.Information(exception, messageTemplate, message, tags);
+            case Framework.Logger.LogLevel.Information:
+                logger.Information(exception, messageTemplate, message, tags);
                 break;
-            case LogLevel.Debug:
-                _logger.Debug(exception, messageTemplate, message, tags);
+            case Framework.Logger.LogLevel.Debug:
+                logger.Debug(exception, messageTemplate, message, tags);
                 break;
-            case LogLevel.Warning:
-                _logger.Warning(exception, messageTemplate, message, tags);
+            case Framework.Logger.LogLevel.Warning:
+                logger.Warning(exception, messageTemplate, message, tags);
                 break;
-            case LogLevel.Error:
-                _logger.Error(exception, messageTemplate, message, tags);
+            case Framework.Logger.LogLevel.Error:
+                logger.Error(exception, messageTemplate, message, tags);
                 break;
-            case LogLevel.Fatal:
-                _logger.Fatal(exception, messageTemplate, message, tags);
+            case Framework.Logger.LogLevel.Fatal:
+                logger.Fatal(exception, messageTemplate, message, tags);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(level), level, null);
