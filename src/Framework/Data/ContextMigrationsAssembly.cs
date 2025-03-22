@@ -38,7 +38,7 @@ public class ContextMigrationsAssembly : MigrationsAssembly
 
         if (dependableMigration)
         {
-            var instance = (Migration)Activator.CreateInstance(migrationClass.AsType(), _provider);
+            var instance = (Migration?)Activator.CreateInstance(migrationClass.AsType(), _provider);
 
             if (instance is null)
             {

@@ -15,13 +15,13 @@ public readonly struct Result<TResult, TError>
     
     public bool IsSuccess { get; }
 
-    public static Result<TResult, TError> Success(TResult value)
+    public static Result<TResult?, TError?> Success(TResult value)
     {
-        return new Result<TResult, TError>(value, default, true);
+        return new Result<TResult?, TError?>(value, default, true);
     }
 
-    public static Result<TResult, TError> Failure(TError error)
+    public static Result<TResult?, TError?> Failure(TError error)
     {
-        return new Result<TResult, TError>(default, error, false);
+        return new Result<TResult?, TError?>(default, error, false);
     }
 }

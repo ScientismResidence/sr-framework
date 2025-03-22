@@ -17,12 +17,12 @@ public class SerilogLogger(Serilog.ILogger logger) : Framework.Logger.IRootLogge
         log(message, null, level);
     }
     
-    public void Log(string message, Exception exception, Framework.Logger.LogLevel level, params string[] tags)
+    public void Log(string message, Exception? exception, Framework.Logger.LogLevel level, params string[] tags)
     {
         log(message, exception, level, tags);
     }
 
-    private void log(string message, Exception exception, Framework.Logger.LogLevel level, params string[] tags)
+    private void log(string message, Exception? exception, Framework.Logger.LogLevel level, params string[] tags)
     {
         string messageTemplate = tags.Length > 0 ? "{Message} Tags:{@Tags}" : "{Message}";
         

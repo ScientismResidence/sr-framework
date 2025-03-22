@@ -52,7 +52,7 @@ public class ScriptsProvider<TKey> : IProvider<TKey> where TKey : struct, Enum
 
     public bool TryGetValue(TKey key, out string value)
     {
-        return _storage.TryGetValue(key, out value);
+        return _storage.TryGetValue(key, out value!);
     }
 
     private void ProcessDirectory(string path)

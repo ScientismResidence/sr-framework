@@ -18,7 +18,7 @@ public class CommandStore
         Add(commandType, _commands);
     }
     
-    public CommandDefinition GetDefinition(string command)
+    public CommandDefinition? GetDefinition(string command)
     {
         string[] parts = SplitCommand(command);
         return GetDefinition(parts, _commands);
@@ -63,9 +63,9 @@ public class CommandStore
     /// <param name="parent">Parent command definition</param>
     /// <exception cref="InvalidOperationException"></exception>
     private void Add(
-        Type commandType, Dictionary<string, CommandDefinition> commands, CommandDefinition parent = null)
+        Type commandType, Dictionary<string, CommandDefinition> commands, CommandDefinition? parent = null)
     {
-        CommandAttribute commandAttribute = commandType.GetCustomAttribute<CommandAttribute>();
+        CommandAttribute? commandAttribute = commandType.GetCustomAttribute<CommandAttribute>();
 
         if (commandAttribute is null)
         {
@@ -81,13 +81,11 @@ public class CommandStore
         };
 
         // Check the definition existence in store by name, if not a case place it in a store
-        if (commands.ContainsKey(definition.Name))
+        if (!commands.TryAdd(definition.Name, definition))
         {
             throw new InvalidOperationException(
                 $"The {commandType.Name} type has a duplicate command name {definition.Name}.");
         }
-        
-        commands.Add(definition.Name, definition);
 
         foreach (var subCommand in commandAttribute.Commands)
         {
@@ -114,16 +112,15 @@ public class CommandStore
     /// <param name="parts">The parts of the command - user input.</param>
     /// <param name="store">The store containing definitions to lookup for</param>
     /// <returns>Matched CommandDefinition or null for an unmatched case</returns>
-    private CommandDefinition GetDefinition(string[] parts, Dictionary<string, CommandDefinition> store)
+    private CommandDefinition? GetDefinition(string[] parts, Dictionary<string, CommandDefinition> store)
     {
         if (parts.Length <= 0) return null;
         
         string name = parts.First();
-        if (!store.ContainsKey(name)) return null;
-        
-        CommandDefinition definition = store[name];
+        if (!store.TryGetValue(name, out var definition)) return null;
+
         string[] remainingParts = parts.Skip(1).ToArray();
-        CommandDefinition subDefinition = GetDefinition(remainingParts, definition.Store);
+        CommandDefinition? subDefinition = GetDefinition(remainingParts, definition.Store);
 
         if (subDefinition is not null) return subDefinition;
         

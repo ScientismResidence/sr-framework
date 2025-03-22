@@ -1,5 +1,8 @@
 This is the set of classes used across my projects to simplify boiler-plating, configuration and services design.
 
+### v.1.1.3b.1
+- Nullable enabled
+- `ValidationException` supports error code
 ### v.1.1.2
 - Added `IRootLogger` registered as singleton to be able requested from the root provider
 ### v.1.1.1

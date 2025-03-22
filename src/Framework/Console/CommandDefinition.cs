@@ -12,11 +12,11 @@ public class CommandDefinition
         @"(?<key>[^=]+)(?:=(?<value>.*))?";
     private List<KeyValuePair<string, string>> _arguments = new();
 
-    public Type CommandType { get; init; }
+    public required Type CommandType { get; init; }
 
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
-    public CommandDefinition Parent { get; init; }
+    public CommandDefinition? Parent { get; init; }
 
     public Dictionary<string, CommandDefinition> Store { get; } = new();
 
@@ -83,21 +83,24 @@ public class CommandDefinition
                 $"There is an argument with a duplicated name for {nameof(ArgumentAttribute)}");
         }
 
-        object command = Activator.CreateInstance(CommandType);
+        object? command = Activator.CreateInstance(CommandType);
+
+        if (command is null)
+        {
+            throw new CommandValidationException("Unable to instantiate command.");
+        }
         
         HashSet<string> argumentNames = new();
         foreach (KeyValuePair<string, string> argument in _arguments)
         {
             string name = ApplyArgument(argument, properties, command);
 
-            if (argumentNames.Contains(name))
+            if (!argumentNames.Add(name))
             {
                 throw new CommandValidationException(
                     $"The argument [{argument.Key}] duplicates another argument for command [{Name}]. " +
                     $"Use only one of them");
             }
-
-            argumentNames.Add(name);
         }
 
         return command;
@@ -106,8 +109,8 @@ public class CommandDefinition
     public StringBuilder GetHelp()
     {
         // Get class level attributes
-        CommandAttribute commandClassAttribute = CommandType.GetCustomAttribute<CommandAttribute>();
-        HelpAttribute helpClassAttribute = CommandType.GetCustomAttribute<HelpAttribute>();
+        CommandAttribute? commandClassAttribute = CommandType.GetCustomAttribute<CommandAttribute>();
+        HelpAttribute? helpClassAttribute = CommandType.GetCustomAttribute<HelpAttribute>();
         
         // Build the result string for the class
         StringBuilder help = new();
@@ -138,7 +141,7 @@ public class CommandDefinition
             // Get property level attributes
             List<ArgumentAttribute> argumentAttributes = property
                 .GetCustomAttributes<ArgumentAttribute>().ToList();
-            HelpAttribute helpAttribute = property.GetCustomAttribute<HelpAttribute>();
+            HelpAttribute? helpAttribute = property.GetCustomAttribute<HelpAttribute>();
 
             if (!argumentAttributes.Any())
             {
@@ -182,7 +185,7 @@ public class CommandDefinition
     private string ApplyArgument(
         KeyValuePair<string, string> argument, Dictionary<string, PropertyInfo> properties, object command)
     {
-        if (!properties.TryGetValue(argument.Key, out PropertyInfo property))
+        if (!properties.TryGetValue(argument.Key, out PropertyInfo? property))
         {
             throw new CommandValidationException(
                 $"Unknown argument [{argument.Key}] for command [{Name}] with value [{argument.Value}]");
@@ -190,13 +193,13 @@ public class CommandDefinition
 
         switch (property.PropertyType)
         {
-            case Type type when type == typeof(string):
+            case { } type when type == typeof(string):
                 SetStringProperty(command, property, argument);
                 break;
-            case Type type when type == typeof(bool):
+            case { } type when type == typeof(bool):
                 SetBooleanProperty(command, property, argument);
                 break;
-            case Type type when type == typeof(int):
+            case { } type when type == typeof(int):
                 SetIntegerProperty(command, property, argument);
                 break;
             default:

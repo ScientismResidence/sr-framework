@@ -3,7 +3,7 @@
 public class ApplicationBuilder
 {
     private readonly CommandStore _store = new();
-    private IServiceProvider _provider;
+    private IServiceProvider? _provider;
     
     public ApplicationBuilder UseProvider(IServiceProvider provider)
     {
@@ -21,6 +21,11 @@ public class ApplicationBuilder
 
     public ApplicationRunner Build()
     {
+        if (_provider is null)
+        {
+            throw new InvalidOperationException("No provider is configured.");
+        }
+        
         return new ApplicationRunner(_provider, _store);
     }
 }

@@ -11,7 +11,7 @@ public class ValidateAttribute(Type modelType) : ActionFilterAttribute
 {
     public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        object model = context.ActionArguments.Values.FirstOrDefault(value => value.GetType() == modelType);
+        object? model = context.ActionArguments.Values.FirstOrDefault(value => value?.GetType() == modelType);
 
         if (model is null)
             throw new FlowException(
@@ -20,7 +20,7 @@ public class ValidateAttribute(Type modelType) : ActionFilterAttribute
                 $"model in that method.");
         
         Type validatorType = typeof(IValidator<>).MakeGenericType(modelType);
-        IValidator validator = (IValidator)context.HttpContext.RequestServices.GetService(validatorType)
+        IValidator validator = (IValidator)context.HttpContext.RequestServices.GetRequiredService(validatorType)
             ?? throw new ApplicationException("Unable to resolve validator for validation attribute");
 
         ValidationContext<object> validationContext = new ValidationContext<object>(model);

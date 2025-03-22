@@ -6,12 +6,12 @@ namespace Framework.Console;
 
 public class ApplicationRunner(IServiceProvider provider, CommandStore store)
 {
-    private readonly ILogger _logger = provider.GetService<ILogger>();
+    private readonly ILogger _logger = provider.GetRequiredService<ILogger>();
 
     public async Task ExecuteAsync(string command)
     {
         _logger.Log($"Executing command: [{command}]...");
-        CommandDefinition definition = store.GetDefinition(command);
+        CommandDefinition? definition = store.GetDefinition(command);
         
         if (definition is null)
         {
@@ -32,7 +32,7 @@ public class ApplicationRunner(IServiceProvider provider, CommandStore store)
         
         while (true)
         {
-            string command = System.Console.ReadLine();
+            string? command = System.Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(command))
             {
