@@ -3,7 +3,7 @@ using Framework.Logger;
 
 namespace Framework;
 
-public class ScriptsProvider<TKey> : IProvider<TKey> where TKey : struct, Enum
+public class FileProvider<TKey> : IProvider<TKey> where TKey : struct, Enum
 {
     private readonly Dictionary<TKey, string> _storage = new();
     private readonly ILogger _logger;
@@ -14,7 +14,7 @@ public class ScriptsProvider<TKey> : IProvider<TKey> where TKey : struct, Enum
     /// <param name="path">
     /// Relative path from assembly execution.
     /// </param>
-    public ScriptsProvider(string path, ILogger logger)
+    public FileProvider(string path, ILogger logger)
     {
         _logger = logger;
 
@@ -57,7 +57,7 @@ public class ScriptsProvider<TKey> : IProvider<TKey> where TKey : struct, Enum
 
     private void ProcessDirectory(string path)
     {
-        string[] files = Directory.GetFiles(path, "*.sql");
+        string[] files = Directory.GetFiles(path);
 
         foreach (string file in files)
         {
